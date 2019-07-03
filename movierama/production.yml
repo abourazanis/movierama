@@ -1,0 +1,42 @@
+version: '3'
+
+volumes:
+  production_postgres_data: {}
+  production_traefik: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: movierama_production_django
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+    command: /start
+
+  postgres:
+    image: postgres:11.3
+    volumes:
+      - production_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.production/.postgres
+
+  traefik:
+    build:
+      context: .
+      dockerfile: ./compose/production/traefik/Dockerfile
+    image: movierama_production_traefik
+    depends_on:
+      - django
+    volumes:
+      - production_traefik:/etc/traefik/acme
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+
+  redis:
+    image: redis:5.0

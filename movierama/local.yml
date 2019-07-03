@@ -1,0 +1,44 @@
+version: '3'
+
+volumes:
+  local_postgres_data: {}
+
+services:
+  django:
+    build:
+      context: .
+      dockerfile: ./compose/local/django/Dockerfile
+    image: movierama_local_django
+    depends_on:
+      - postgres
+    volumes:
+      - .:/app
+    env_file:
+      - ./.envs/.local/.postgres
+    ports:
+      - "8000:8000"
+    command: /start
+
+  postgres:
+    image: postgres:11.3
+    volumes:
+      - local_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.local/.postgres
+
+  node:
+    build:
+      context: .
+      dockerfile: ./compose/local/node/Dockerfile
+    image: movierama_local_node
+    depends_on:
+      - django
+    volumes:
+      - .:/app
+      # http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html
+      - /app/node_modules
+    command: npm run dev
+    ports:
+      - "3000:3000"
+      # Expose browsersync UI: https://www.browsersync.io/docs/options/#option-ui
+      - "3001:3001"
