@@ -13,11 +13,15 @@ pylint-django==2.0.9    # https://github.com/PyCQA/pylint-django
 
 # Django
 # ------------------------------------------------------------------------------
-factory-boy==2.12.0         # https://github.com/FactoryBoy/factory_boy
 django-debug-toolbar==2.0   # https://github.com/jazzband/django-debug-toolbar
 django-extensions==2.1.9    # https://github.com/django-extensions/django-extensions
 django-coverage-plugin==1.6.0  # https://github.com/nedbat/django_coverage_plugin
 
 # Testing
 # ------------------------------------------------------------------------------
+behave==1.2.6           # https://behave.readthedocs.io/en/latest/index.html
+behave-django==1.3.0    # https://behave-django.readthedocs.io/
+selenium==3.141.0       # https://www.seleniumhq.org
+factory-boy==2.12.0     # https://github.com/FactoryBoy/factory_boy
+splinter==0.11.0        # https://splinter.readthedocs.io
 

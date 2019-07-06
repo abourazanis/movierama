@@ -15,6 +15,13 @@ RUN apk update \
   # https://docs.djangoproject.com/en/dev/ref/django-admin/#dbshell
   && apk add postgresql-client
 
+
+# install chromedriver
+RUN apk add chromium chromium-chromedriver
+
+# set display port to avoid crash
+ENV DISPLAY=:99
+
 # Requirements are installed here to ensure they will be cached.
 COPY ./requirements /requirements
 RUN pip install -r /requirements/local.txt

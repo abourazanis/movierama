@@ -59,3 +59,8 @@ INTERNAL_IPS += [ip[:-1] + "1" for ip in ips]
 # https://django-extensions.readthedocs.io/en/latest/installation_instructions.html#configuration
 INSTALLED_APPS += ["django_extensions"]  # noqa F405
 
+# BDD
+INSTALLED_APPS += ["behave_django"]
+
+
+
