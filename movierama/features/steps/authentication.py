@@ -37,7 +37,6 @@ def step_impl(context, username):
 
 @then(u'user is redirected to "{page}"')
 def step_impl(context, page):
-    print(context.browser.url)
     assert context.browser.url == context.get_url(page)
 
 

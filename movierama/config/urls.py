@@ -11,6 +11,7 @@ urlpatterns = [
     path(settings.ADMIN_URL, admin.site.urls),
     # User management
     path("accounts/", include("allauth.urls")),
+    path("movies/", include("movierama.movies.urls", namespace="movies")),
 
 
 

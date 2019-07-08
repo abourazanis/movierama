@@ -71,6 +71,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "movierama.users.apps.UsersConfig",
+    "movierama.movies.apps.MoviesConfig",
 
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps

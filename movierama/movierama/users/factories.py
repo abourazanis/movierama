@@ -1,6 +1,6 @@
 import factory
 from django.contrib.auth.hashers import make_password
-from .models import  User
+from .models import User
 
 
 DUMMY_PASSWORD = "123asd456"

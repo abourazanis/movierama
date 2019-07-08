@@ -1,10 +1,10 @@
 Feature: Movie Social Sharing
 
-  Background:
-    Given there is a set of Movies in the Database
-      | id | title     | description   | date_published     | likes | hates  | username
-      | 1  | Movie 1   | description 2 | 2019-07-01 10:00   | 2     | 5      | jaimelan
-      | 2  | Movie 2   | description 3 | 2019-07-02 23:00   | 4     | 1      | theongre
+#  Background:
+#    Given there is a set of Movies in the Database
+#      | id | title     | description   | date_published     | likes | hates  | username
+#      | 1  | Movie 1   | description 2 | 2019-07-01 10:00   | 2     | 5      | jaimelan
+#      | 2  | Movie 2   | description 3 | 2019-07-02 23:00   | 4     | 1      | theongre
 
   Scenario: User sees a list of shared Movies in homepage
     Given user is on the homepage
@@ -36,12 +36,16 @@ Feature: Movie Social Sharing
 
 
   Scenario: User adds a new Movie
-    Given authenticated user is in homepage
-    When he clicks on "Add Movie" button
-    Then he is redirected to the New Movie page
-    When he enters all the required data
-    And Movie does not exists already
-    And clicks on "Save"
+    Given existing user
+    And user is authenticated
+    When user is on the Home page
+    When he press "btn_add_movie"
+    Then user is redirected to "movies:create"
+    When fills the form
+            | field             | value                       |
+            | title             | The Empire Strikes Back     |
+            | description       | Lorem ipsum                 |
+    And he press "btn_save"
     Then a new Movie is added
 
 

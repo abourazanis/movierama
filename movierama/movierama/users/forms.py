@@ -8,7 +8,7 @@ class CustomSignupForm(SignupForm):
     last_name = forms.CharField(max_length=30, label='Last Name')
 
     def __init__(self, *args, **kwargs):
-        super(CustomSignupForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["email"].widget.attrs['class'] = 'invisible'
         self.fields["email"].label = ''
 

@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Movie - MovieRama{% endblock title %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-6 offset-md-3">
+
+      <h1 class="p-3">{% trans "Add Movie" %}</h1>
+
+
+      <form method="POST" action=".">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="btn btn-primary" type="submit" id="btn_save">{% trans "Save" %}</button>
+      </form>
+
+
+    </div>
+  </div>
+{% endblock %}

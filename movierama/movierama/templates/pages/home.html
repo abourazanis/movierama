@@ -1,1 +1,14 @@
 {% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-md-8">
+
+      Movies list
+
+    </div>
+    <div class="offset-md-1 col-md-3 text-right">
+      <a href="{% url 'movies:create' %}" class="btn btn-success" id="btn_add_movie">New movie</a>
+    </div>
+  </div>
+{% endblock %}
