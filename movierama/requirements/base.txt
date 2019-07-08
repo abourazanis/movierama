@@ -10,3 +10,4 @@ django==2.2.3               # https://www.djangoproject.com/
 django-environ==0.4.5       # https://github.com/joke2k/django-environ
 django-allauth==0.39.1      # https://github.com/pennersr/django-allauth
 django-redis==4.10.0        # https://github.com/niwinz/django-redis
+django-crispy-forms==1.7.2  # https://django-crispy-forms.readthedocs.io

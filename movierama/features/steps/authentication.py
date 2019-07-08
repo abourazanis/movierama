@@ -1,5 +1,4 @@
 from behave import *  # noqa
-from django.conf import settings
 
 from movierama.users.factories import UserFactory, DUMMY_PASSWORD
 
@@ -19,7 +18,15 @@ def step_impl(context):
 
 @when(u'he press "{button}"')
 def step_impl(context, button):
-    context.browser.find_by_name(button).first.click()
+    context.browser.find_by_id(button).first.click()
+
+
+@when(u'he press on the "{link}" link')
+def step_impl(context, link):
+    # splinter bug in links interactions
+    # context.browser.click_link_by_id(link)
+    # use direct url call instead
+    context.browser.visit(context.get_url("account_logout"))
 
 
 @then(u'a MovieRama account is created for "{username}"')
@@ -30,13 +37,14 @@ def step_impl(context, username):
 
 @then(u'user is redirected to "{page}"')
 def step_impl(context, page):
+    print(context.browser.url)
     assert context.browser.url == context.get_url(page)
 
 
 @when(u'user is on the Login page')
 def step_impl(context):
     context.browser.visit(context.get_url("account_login"))
-    assert context.browser.title == "Sign In"
+    assert context.browser.title == "Log In"
     assert context.browser.url == context.get_url("account_login")
 
 
@@ -49,32 +57,25 @@ def step_impl(context):
 
 @given(u'existing user')
 def step_impl(context):
-    context.user = UserFactory()
+    context.user = UserFactory(username="jaimelan")
 
 
 @given(u'user is authenticated')
 def step_impl(context):
-    from movierama.users.utils import create_session_cookie
+    context.browser.visit(context.get_url("account_login"))
+    context.browser.fill("login", context.user.username)
+    context.browser.fill("password", DUMMY_PASSWORD)
+    context.browser.find_by_id("btn_login").first.click()
 
-    session_key = create_session_cookie(username=context.user.username, password=DUMMY_PASSWORD)
-    # to set a cookie we need to first visit the domain.
-    # 404 pages load the quickest
-    context.browser.get(context.get_url("/404_no_such_url/"))
-    context.browser.cookies.add(dict(
-        name=settings.SESSION_COOKIE_NAME,
-        value=session_key,
-        path='/',
-    ))
-
-    context.browser.get(context.get_url("homepage"))
-    assert context.browser.is_element_present_by_css("li#navAccount")
+    assert context.browser.find_by_id("user_menu").first
 
 
 @then(u'user is authenticated')
 def step_impl(context):
-    assert len(context.browser.find_by_id("user_menu")) > 0
+    assert context.browser.find_by_id("user_menu").first
 
 
 @then(u'user is logged out')
 def step_impl(context):
-    assert len(context.browser.find_by_id("sign-up-link")) > 0
+    context.browser.visit(context.get_url("homepage"))
+    assert context.browser.find_by_id("log_in_link").first

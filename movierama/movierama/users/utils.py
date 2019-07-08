@@ -9,8 +9,9 @@ from django.contrib.sessions.backends.db import SessionStore
 def create_session_cookie(username, password):
 
     # First, create a new test user
-    user = get_user_model()
-    user.objects.create_user(username=username, password=password)
+    (user, created) = get_user_model().objects.get_or_create(username=username)
+    if created:
+        user.set_password(password)
 
     # Then create the authenticated session using the new user credentials
     session = SessionStore()
@@ -23,7 +24,6 @@ def create_session_cookie(username, password):
     cookie = {
         'name': settings.SESSION_COOKIE_NAME,
         'value': session.session_key,
-        'secure': False,
         'path': '/',
     }
     return cookie
