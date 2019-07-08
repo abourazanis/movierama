@@ -3,9 +3,10 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from movierama.movies.forms import MovieForm
+from movierama.movies.models import Movie
 
 
 class MovieCreateView(CreateView):
@@ -32,4 +33,13 @@ class MovieCreateView(CreateView):
 
 
 create_movie = MovieCreateView.as_view()
+
+
+class MovieListView(ListView):
+    model = Movie
+    template_name = "pages/home.html"
+    context_object_name = "movies"
+
+
+movieslist = MovieListView.as_view()
 

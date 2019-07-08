@@ -49,9 +49,12 @@
       <div class="collapse navbar-collapse w-100" id="navbarSupportedContent">
         <ul class="nav navbar-nav ml-auto w-100 justify-content-end">
           {% if request.user.is_authenticated %}
+            <li class="nav-item">
+              <span style="display: block; padding: 0.5rem">Welcome back </span>
+            </li>
             <li class="nav-item" id="user_menu">
               {# URL provided by django-allauth/account/urls.py #}
-              <a class="nav-link" href="{% url 'homepage' %}">{{ request.user.get_full_name }}</a>
+              <a class="nav-link font-weight-bold" href="{% url 'homepage' %}">{{ request.user.get_full_name }}</a>
             </li>
             <li class="nav-item">
               {# URL provided by django-allauth/account/urls.py #}

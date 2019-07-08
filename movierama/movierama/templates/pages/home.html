@@ -1,13 +1,23 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block content %}
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-8 pl-0">
 
-      Movies list
+      {% for movie in movies %}
+        <div class="card border-secondary mb-3">
+          <div class="card-body">
+            <h3 class="card-title"> {{ movie.title }} </h3>
+            <p class="card-subtitle mb-2"> Posted by <a href="#">{{ movie.user }}</a> {{ movie.date_created | naturaltime }} </p>
+            <p class="card-text"> {{ movie.description }} </p>
+            <span> 0 likes | 0 hates </span>
+          </div>
+        </div>
+      {% endfor %}
 
     </div>
-    <div class="offset-md-1 col-md-3 text-right">
+    <div class="offset-md-1 col-md-3 text-right pr-0">
       <a href="{% url 'movies:create' %}" class="btn btn-success" id="btn_add_movie">New movie</a>
     </div>
   </div>
