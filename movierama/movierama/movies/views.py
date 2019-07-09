@@ -4,6 +4,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, ListView
+from django.views.generic.edit import FormMixin
 
 from movierama.movies.forms import MovieForm
 from movierama.movies.models import Movie
@@ -39,6 +40,15 @@ class MovieListView(ListView):
     model = Movie
     template_name = "pages/home.html"
     context_object_name = "movies"
+
+    def get_ordering(self):
+        order_by_mapping = {"date": "-date_created", "likes": "", "hates": ""}
+        order_by = self.request.GET.get('order_by', None)
+
+        if order_by and order_by in order_by_mapping.keys():
+            self.ordering = order_by_mapping[order_by]
+
+        return self.ordering
 
 
 movieslist = MovieListView.as_view()
