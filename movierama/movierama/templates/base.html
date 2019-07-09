@@ -54,7 +54,7 @@
             </li>
             <li class="nav-item" id="user_menu">
               {# URL provided by django-allauth/account/urls.py #}
-              <a class="nav-link font-weight-bold" href="{% url 'homepage' %}">{{ request.user.get_full_name }}</a>
+              <a class="nav-link font-weight-bold" href="{% url 'userpage' username=request.user.username %}">{{ request.user.get_full_name }}</a>
             </li>
             <li class="nav-item">
               {# URL provided by django-allauth/account/urls.py #}
