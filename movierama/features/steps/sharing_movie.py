@@ -1,7 +1,4 @@
 from behave import *  # noqa
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 
 from movierama.movies.factories import MovieFactory
 from movierama.users.factories import UserFactory
@@ -42,5 +39,62 @@ def step_impl(context, username):
 @then(u'movie with title "{movie}" should be first')
 def step_impl(context, movie):
     element = context.browser.find_by_css('h3').first
+    print(element.value)
     assert context.browser.find_by_css('h3').first.value == movie
+
+
+@given(u'existing movie "{movie}" of user "{username}"')
+def step_impl(context, movie, username):
+    user = UserFactory(username=username)
+    context.movie = MovieFactory(title=movie, user=user)
+
+
+@when(u'user likes Movie')
+def step_impl(context):
+    context.old_likes = context.movie.likes()
+    context.movie.like(context.user)
+
+
+@then(u'the number of likes of the movie is increased by "{count:d}"')
+def step_impl(context, count):
+    assert context.old_likes + count == context.movie.likes()
+
+
+@when(u'user hates Movie')
+def step_impl(context):
+    context.old_hates = context.movie.hates()
+    context.movie.hate(context.user)
+
+
+@then(u'the number of hates of the movie is increased by "{count:d}"')
+def step_impl(context, count):
+    assert context.old_hates + count == context.movie.hates()
+
+
+@then(u'a movievote for "{user}" and "{movie}" is not created')
+def step_impl(context, user, movie):
+    from movierama.movies.models import MovieVote
+    assert MovieVote.objects.filter(movie__title=movie, user__username=user).exists() is False
+
+
+@then(u'a new Movie with title "{title}" is not added')
+def step_impl(context, title):
+    from movierama.movies.models import Movie
+    assert Movie.objects.filter(title=title).count() == 1
+
+
+@given(u'user likes Movie')
+def step_impl(context):
+    context.movie.like(context.user)
+    context.old_likes = context.movie.likes()
+
+
+@when(u'user removes vote')
+def step_impl(context):
+    context.movie.remove_vote(context.user)
+
+
+@then(u'the number of likes of the movie is descreased by "{count:d}"')
+def step_impl(context, count):
+    assert context.old_likes - count == context.movie.likes()
 
