@@ -1,6 +1,6 @@
 from behave import *  # noqa
 
-from movierama.movies.factories import MovieFactory
+from movierama.movies.factories import MovieFactory, MovieVoteFactory
 from movierama.users.factories import UserFactory
 
 
@@ -13,7 +13,11 @@ def step_impl(context):
 def step_impl(context):
     for row in context.table:
         user = UserFactory(username=row["username"])
-        MovieFactory(title=row["title"], description=row["description"], date_created=row["date_created"], user=user)
+        movie = MovieFactory(title=row["title"], description=row["description"], date_created=row["date_created"], user=user)
+        for i in range(0, int(row["hates"])):
+            MovieVoteFactory(movie=movie, vote=False)
+        for i in range(0, int(row["likes"])):
+            MovieVoteFactory(movie=movie, vote=True)
 
 
 @given(u'user is on the Home page')

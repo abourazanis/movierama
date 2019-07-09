@@ -2,10 +2,10 @@ Feature: Movie Social Sharing
 
   Background:
     Given there is a set of Movies in the Database
-      | title     | description   | date_created       | username |
-      | Movie 1   | description 2 | 2019-07-01 10:00   | jaimelan |
-      | Movie 2   | description 3 | 2019-07-02 23:00   | theongre |
-      | Movie 3   | description 4 | 2019-07-02 23:30   | jonsnow  |
+      | title     | description   | date_created       | username | likes | hates |
+      | Movie 1   | description 2 | 2019-07-01 10:00   | jaimelan | 2     | 1     |
+      | Movie 2   | description 3 | 2019-07-02 23:00   | theongre | 1     | 2     |
+      | Movie 3   | description 4 | 2019-07-02 23:30   | jonsnow  | 0     | 1     |
 
   Scenario: User sees a list of shared Movies in homepage
     Given user is on the Home page
@@ -32,8 +32,8 @@ Feature: Movie Social Sharing
     Examples: Filters
     | filter          | movie    |
     | order_by_date   | Movie 3  |
-#    | order_by_likes  | Movie 2 |
-#    | order_by_hates  | Movie 2 |
+    | order_by_likes  | Movie 1 |
+    | order_by_hates  | Movie 2 |
 
 
   Scenario: User adds a new Movie
@@ -49,20 +49,22 @@ Feature: Movie Social Sharing
     And he press "btn_save"
     Then a new Movie is added
 
-
-  Scenario: User cannot add an existing Movie
-    Given existing user
-    And user is authenticated
-    And existing movie "Movie 3" of user "jonsnow"
-    When user is on the Home page
-    When he press "btn_add_movie"
-    Then user is redirected to "movies:create"
-    When fills the form
-            | field             | value                       |
-            | title             | Movie 3     |
-            | description       | Lorem ipsum                 |
-    And he press "btn_save"
-    Then a new Movie with title "Movie 3" is not added
+# TODO: Check that the assumption is right. In case a movie already exists, show a informative message
+# stating that movie X already exists
+  
+#  Scenario: User cannot add an existing Movie
+#    Given existing user
+#    And user is authenticated
+#    And existing movie "Movie 3" of user "jonsnow"
+#    When user is on the Home page
+#    When he press "btn_add_movie"
+#    Then user is redirected to "movies:create"
+#    When fills the form
+#            | field             | value                       |
+#            | title             | Movie 3     |
+#            | description       | Lorem ipsum                 |
+#    And he press "btn_save"
+#    Then a new Movie with title "Movie 3" is not added
 
   Scenario: User likes a Movie
     Given existing user
