@@ -1,13 +1,13 @@
 Feature: Movie Social Sharing
 
-#  Background:
-#    Given there is a set of Movies in the Database
-#      | id | title     | description   | date_published     | likes | hates  | username
-#      | 1  | Movie 1   | description 2 | 2019-07-01 10:00   | 2     | 5      | jaimelan
-#      | 2  | Movie 2   | description 3 | 2019-07-02 23:00   | 4     | 1      | theongre
+  Background:
+    Given there is a set of Movies in the Database
+      | title     | description   | date_created       |
+      | Movie 1   | description 2 | 2019-07-01 10:00   |
+      | Movie 2   | description 3 | 2019-07-02 23:00   |
 
   Scenario: User sees a list of shared Movies in homepage
-    Given user is on the homepage
+    Given user is on the Home page
     Then the page includes "Movie 1"
     Then the page includes "Movie 2"
 

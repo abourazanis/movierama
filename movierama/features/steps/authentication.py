@@ -1,4 +1,7 @@
 from behave import *  # noqa
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
 
 from movierama.users.factories import UserFactory, DUMMY_PASSWORD
 
@@ -13,7 +16,14 @@ def step_impl(context):
 @when(u'fills the form')
 def step_impl(context):
     for row in context.table:
-        context.browser.fill(row['field'], row['value'])
+        try:
+            element = WebDriverWait(context.browser.driver, 10).until(
+                EC.presence_of_element_located((By.NAME, row['field']))
+            )
+            element.send_keys(row['value'])
+            # context.browser.fill(row['field'], row['value'])
+        except Exception as e:
+            print(e)
 
 
 @when(u'he press "{button}"')
@@ -56,7 +66,7 @@ def step_impl(context):
 
 @given(u'existing user')
 def step_impl(context):
-    context.user = UserFactory(username="jaimelan")
+    context.user = UserFactory(username="jaimelan", first_name="Jaime", last_name="Lannister")
 
 
 @given(u'user is authenticated')

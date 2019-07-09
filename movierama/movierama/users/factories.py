@@ -14,8 +14,8 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = User
         django_get_or_create = ('username',)
 
-    first_name = 'Jaime'
-    last_name = 'Lannister'
+    first_name = factory.Faker('first_name')
+    last_name = factory.Faker('last_name')
     username = factory.Faker('user_name')
     password = make_password(DUMMY_PASSWORD)
     is_active = True
