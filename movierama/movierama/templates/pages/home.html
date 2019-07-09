@@ -9,9 +9,42 @@
         <div class="card border-secondary mb-3">
           <div class="card-body">
             <h3 class="card-title"> {{ movie.title }} </h3>
-            <p class="card-subtitle mb-2"> Posted by <a href="{% url 'userpage' username=movie.user.username %}">{{ movie.user }}</a> {{ movie.date_created | naturaltime }} </p>
+            <p class="card-subtitle mb-2"> Posted by <a
+              href="{% url 'userpage' username=movie.user.username %}">{{ movie.user }}</a> {{ movie.date_created | naturaltime }}
+            </p>
             <p class="card-text"> {{ movie.description }} </p>
-            <span> 0 likes | 0 hates </span>
+            {% if request.user.is_authenticated %}
+              <div class="row">
+              {% with movie.voted as voted %}
+                <form method="post" action="{% url 'movies:vote' movie_id=movie.id %}" class="col-md-7 pl-0">
+                  {% csrf_token %}
+
+                  {% if voted is True %}
+                    <span class="d-inline-block p-1 align-middle">{{ movie.likes }} likes</span>
+                  {% else %}
+                    <button type="submit" class="btn btn-link" name="vote" value="True">{{ movie.likes }} likes</button>
+                  {% endif %}
+                  |
+                  {% if voted is False %}
+                    <span class="d-inline-block p-1 align-middle">{{ movie.hates }} hates</span>
+                  {% else %}
+                    <button type="submit" class="btn btn-link" name="vote" value="False">{{ movie.hates }} hates
+                    </button>
+                  {% endif %}
+                </form>
+
+                {% if voted is True or voted is False %}
+                  <form method="post" action="{% url 'movies:unvote' movie_id=movie.id %}" class="col-md-5 pr-0 text-right">
+                    {% csrf_token %}
+                    <span class="d-inline-block p-1 align-middle">You {% if voted %}like{% else %}hate{% endif %} this movie </span> |
+                    <button type="submit" class="btn btn-link">Un{% if voted %}like{% else %}hate{% endif %}</button>
+                  </form>
+                {% endif %}
+              {% endwith %}
+              </div>
+            {% else %}
+              <span> {{ movie.likes }} likes | {{ movie.hates }} hates </span>
+            {% endif %}
           </div>
         </div>
       {% endfor %}

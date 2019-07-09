@@ -75,7 +75,10 @@ class MoviesManager(models.Manager):
         # so we will have a dict of dicts with the following format:
         # { movie_id: { user_id: vote}}
         for v in votes:
-            voted_users[v.movie_id].append({v.user_id: v.vote})
+            if v.movie_id in voted_users.keys():
+                voted_users[v.movie_id].update({v.user_id: v.vote})
+            else:
+                voted_users[v.movie_id] = {v.user_id: v.vote}
 
         for r in queryset:
             votes = voted_users.get(r.id, {})
