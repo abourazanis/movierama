@@ -47,7 +47,7 @@ class MovieListView(ListView):
         return self.request.GET.get('order_by', None)
 
     def get_queryset(self):
-        queryset = self.model.objects.all()
+        queryset = self.model.objects
         if self.request.user.is_authenticated:
             queryset = self.model.as_user(self.request.user.id).all()
 
@@ -64,7 +64,7 @@ class MovieListView(ListView):
             if ordering == "hates":
                 queryset = queryset.order_by_hates()
 
-        return queryset
+        return queryset.select_related('user')
 
 
 movieslist = MovieListView.as_view()

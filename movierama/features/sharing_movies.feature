@@ -51,7 +51,7 @@ Feature: Movie Social Sharing
 
 # TODO: Check that the assumption is right. In case a movie already exists, show a informative message
 # stating that movie X already exists
-  
+
 #  Scenario: User cannot add an existing Movie
 #    Given existing user
 #    And user is authenticated

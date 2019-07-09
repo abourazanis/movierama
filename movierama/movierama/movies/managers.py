@@ -6,7 +6,8 @@ from django.apps import apps
 
 
 class VotedMovieQuerySet(QuerySet):
-    def order_by_likes(self):
+
+    def annotate_votes(self):
         return (
             self.annotate(
                 likes_count=Count(
@@ -14,20 +15,24 @@ class VotedMovieQuerySet(QuerySet):
                         When(votes__vote=True, then=1),
                         output_field=IntegerField(),
                     )
-                )
-            ).order_by("-likes_count", "-date_created")
-        )
-
-    def order_by_hates(self):
-        return (
-            self.annotate(
+                ),
                 hates_count=Count(
                     Case(
                         When(votes__vote=False, then=1),
                         output_field=IntegerField(),
                     )
                 )
-            ).order_by("-hates_count", "-date_created")
+            )
+        )
+
+    def order_by_likes(self):
+        return (
+            self.order_by("-likes_count", "-date_created")
+        )
+
+    def order_by_hates(self):
+        return (
+            self.order_by("-hates_count", "-date_created")
         )
 
 
@@ -48,6 +53,8 @@ class MoviesManager(models.Manager):
             model=self.model,
             using=self._db,
             hints=self._hints)
+
+        queryset = queryset.annotate_votes()
 
         if self.user_id is not None:
             queryset = self.vote_annotated(queryset, self.user_id)

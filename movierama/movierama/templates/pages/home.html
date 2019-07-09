@@ -20,15 +20,15 @@
                   {% csrf_token %}
 
                   {% if voted is True %}
-                    <span class="d-inline-block p-1 align-middle">{{ movie.likes }} likes</span>
+                    <span class="d-inline-block p-1 align-middle">{{ movie.likes_count }} likes</span>
                   {% else %}
-                    <button type="submit" class="btn btn-link" name="vote" value="True">{{ movie.likes }} likes</button>
+                    <button type="submit" class="btn btn-link" name="vote" value="True">{{ movie.likes_count }} likes</button>
                   {% endif %}
                   |
                   {% if voted is False %}
-                    <span class="d-inline-block p-1 align-middle">{{ movie.hates }} hates</span>
+                    <span class="d-inline-block p-1 align-middle">{{ movie.hates_count }} hates</span>
                   {% else %}
-                    <button type="submit" class="btn btn-link" name="vote" value="False">{{ movie.hates }} hates
+                    <button type="submit" class="btn btn-link" name="vote" value="False">{{ movie.hates_count }} hates
                     </button>
                   {% endif %}
                 </form>
@@ -43,7 +43,7 @@
               {% endwith %}
               </div>
             {% else %}
-              <span> {{ movie.likes }} likes | {{ movie.hates }} hates </span>
+              <span> {{ movie.likes_count }} likes | {{ movie.hates_count }} hates </span>
             {% endif %}
           </div>
         </div>
