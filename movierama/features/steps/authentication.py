@@ -28,15 +28,13 @@ def step_impl(context):
 
 @when(u'he press "{button}"')
 def step_impl(context, button):
-    context.browser.find_by_id(button).first.click()
-
-
-@when(u'he press on the "{link}" link')
-def step_impl(context, link):
-    # splinter bug in links interactions
-    # context.browser.click_link_by_id(link)
-    # use direct url call instead
-    context.browser.visit(context.get_url("account_logout"))
+    try:
+        element = WebDriverWait(context.browser.driver, 10).until(
+            EC.presence_of_element_located((By.ID, button))
+        )
+        context.browser.find_by_id(button).first.click()
+    except Exception as e:
+        print(e)
 
 
 @then(u'a MovieRama account is created for "{username}"')
@@ -87,4 +85,11 @@ def step_impl(context):
 @then(u'user is logged out')
 def step_impl(context):
     context.browser.visit(context.get_url("homepage"))
-    assert context.browser.find_by_id("log_in_link").first
+    try:
+        element = WebDriverWait(context.browser.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "log_in_link"))
+        )
+        assert context.browser.find_by_id("log_in_link").first
+    except Exception as e:
+        print(e)
+

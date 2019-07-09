@@ -2,9 +2,9 @@ Feature: Movie Social Sharing
 
   Background:
     Given there is a set of Movies in the Database
-      | title     | description   | date_created       |
-      | Movie 1   | description 2 | 2019-07-01 10:00   |
-      | Movie 2   | description 3 | 2019-07-02 23:00   |
+      | title     | description   | date_created       | username |
+      | Movie 1   | description 2 | 2019-07-01 10:00   | jaimelan |
+      | Movie 2   | description 3 | 2019-07-02 23:00   | theongre |
 
   Scenario: User sees a list of shared Movies in homepage
     Given user is on the Home page
@@ -13,26 +13,26 @@ Feature: Movie Social Sharing
 
 
   Scenario Outline: User sees a list of a specific user's Movies in homepage
-    Given user is on the homepage
+    Given user is on the Home page
     When he clicks on the name of user "<username>"
-    Then the page includes only "<movie>"
+    Then the page includes "<movie>"
 
     Examples: Results
-    | username  | movie
-    | jaimelan  | Movie 1
-    | theongre  | Movie 2
+    | username  | movie     |
+    | jaimelan  | Movie 1   |
+    | theongre  | Movie 2   |
 
 
   Scenario Outline: User can sort by "<filter>" a list of Movies
-    Given user is on homepage
-    When user click in sort by "<filter>" button
-    Then the list of shared Movies are sorted by "<filter>"
+    Given user is on the Home page
+    When he press "<filter>"
+    Then movie with title "<movie>" should be first
 
     Examples: Filters
-    | filter
-    | date
-    | likes
-    | hates
+    | filter          | movie    |
+    | order_by_date   | Movie 2  |
+#    | order_by_likes  | Movie 2 |
+#    | order_by_hates  | Movie 2 |
 
 
   Scenario: User adds a new Movie

@@ -31,7 +31,7 @@ Feature: User Authentication
         Given existing user
         And user is authenticated
         When user is on the Home page
-        And he press on the "btn_logout" link
+        And he press "btn_logout"
         Then user is logged out
         Then user is redirected to "homepage"
 
