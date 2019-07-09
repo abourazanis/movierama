@@ -50,6 +50,15 @@ class MovieListView(ListView):
 
         return self.ordering
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+
+        filter = self.kwargs.get("username", None)
+        if filter:
+            queryset = queryset.filter(user__username=filter)
+
+        return queryset
+
 
 movieslist = MovieListView.as_view()
 

@@ -9,7 +9,7 @@
         <div class="card border-secondary mb-3">
           <div class="card-body">
             <h3 class="card-title"> {{ movie.title }} </h3>
-            <p class="card-subtitle mb-2"> Posted by <a href="#">{{ movie.user }}</a> {{ movie.date_created | naturaltime }} </p>
+            <p class="card-subtitle mb-2"> Posted by <a href="{% url 'userpage' username=movie.user.username %}">{{ movie.user }}</a> {{ movie.date_created | naturaltime }} </p>
             <p class="card-text"> {{ movie.description }} </p>
             <span> 0 likes | 0 hates </span>
           </div>
