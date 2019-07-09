@@ -64,7 +64,7 @@ class MovieListView(ListView):
             if ordering == "hates":
                 queryset = queryset.order_by_hates()
 
-        return queryset.select_related('user')
+        return queryset
 
 
 movieslist = MovieListView.as_view()

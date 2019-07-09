@@ -54,7 +54,7 @@ class MoviesManager(models.Manager):
             using=self._db,
             hints=self._hints)
 
-        queryset = queryset.annotate_votes()
+        queryset = queryset.select_related('user').annotate_votes()
 
         if self.user_id is not None:
             queryset = self.vote_annotated(queryset, self.user_id)
@@ -71,11 +71,10 @@ class MoviesManager(models.Manager):
 
         """
 
-        voted_users = defaultdict()
+        voted_users = {}
 
         # In order to avoid circular imports
         MovieVote = apps.get_model('movies', 'MovieVote')
-
         votes = MovieVote.objects.filter(movie_id__in=queryset.values_list('id'))
 
         # add each user that has voted in a dict with key the movie id
