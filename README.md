@@ -31,6 +31,19 @@ Django's runserver will be available in http://127.0.0.1:8000/
 [Browsersync](https://www.browsersync.io/) is available in http://127.0.0.1:3000/
   (UI version is on http://127.0.0.1:3001)
   
+Import initial data:
+```
+docker-compose -f local.yml run --rm django python manage.py loaddata users.json
+docker-compose -f local.yml run --rm django python manage.py loaddata movies.json
+```
+
+```
+Note: Credentials for the example users following the below format: 
+username: firstnamelastname
+password: 123asd456
+```
+e.g Jon Snow is jonsnow with 123asd456 as password 
+  
 
 
 ## Testing
