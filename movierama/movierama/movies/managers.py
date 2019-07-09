@@ -11,23 +11,23 @@ class VotedMovieQuerySet(QuerySet):
             self.annotate(
                 likes_count=Count(
                     Case(
-                        When(movievotes__vote=True, then=1),
+                        When(votes__vote=True, then=1),
                         output_field=IntegerField(),
                     )
                 )
-            )
+            ).order_by("-likes_count", "-date_created")
         )
 
     def order_by_hates(self):
         return (
             self.annotate(
-                likes_count=Count(
+                hates_count=Count(
                     Case(
-                        When(movievotes__vote=False, then=1),
+                        When(votes__vote=False, then=1),
                         output_field=IntegerField(),
                     )
                 )
-            )
+            ).order_by("-hates_count", "-date_created")
         )
 
 

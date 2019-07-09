@@ -44,28 +44,25 @@ class MovieListView(ListView):
     context_object_name = "movies"
 
     def get_ordering(self):
-        order_by_mapping = {"date": "-date_created", "likes": "", "hates": ""}
-        order_by = self.request.GET.get('order_by', None)
-
-        if order_by and order_by in order_by_mapping.keys():
-            self.ordering = order_by_mapping[order_by]
-
-        return self.ordering
+        return self.request.GET.get('order_by', None)
 
     def get_queryset(self):
         queryset = self.model.objects.all()
         if self.request.user.is_authenticated:
             queryset = self.model.as_user(self.request.user.id).all()
 
-        filter = self.kwargs.get("username", None)
-        if filter:
-            queryset = queryset.filter(user__username=filter)
+        username = self.kwargs.get("username", None)
+        if username:
+            queryset = queryset.filter(user__username=username)
 
         ordering = self.get_ordering()
         if ordering:
-            if isinstance(ordering, str):
-                ordering = (ordering,)
-            queryset = queryset.order_by(*ordering)
+            if ordering == "date":
+                queryset = queryset.order_by("-date_created")
+            if ordering == "likes":
+                queryset = queryset.order_by_likes()
+            if ordering == "hates":
+                queryset = queryset.order_by_hates()
 
         return queryset
 
